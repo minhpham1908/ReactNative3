@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import {
   Text,
-  View,
+  FlatList,
+  Image,
 } from 'react-native';
-
 class ComicDetail extends Component {
-  state = {  }
+  state = {}
   render() {
     return (
-     <Text>HELLO </Text>
+      <FlatList
+        data={this.props.navigation.state.params.comic.photos}
+        renderItem={({ item }) => <Image source={{ uri: item }} 
+        style={{height: 200}} /> }
+        keyExtractor={(item)=> item} />
     );
   }
 }

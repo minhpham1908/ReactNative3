@@ -6,12 +6,14 @@ import {
     Image,
     Dimensions
 } from 'react-native';
+import ComicDetail from './ComicDetail';
 
 class ComicListItem extends Component {
     state = {}
     render() {
         return (
-            <TouchableOpacity style={styles.container}>
+            <TouchableOpacity style={styles.container}
+                onPress={() => this.props.navigation.navigate('ComicDetail', { comic: this.props.comic })}>
                 <Image
                     source={{ uri: this.props.comic.photos[0] }}
                     style={styles.image} />
