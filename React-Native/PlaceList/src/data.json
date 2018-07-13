@@ -1,0 +1,49 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "title": "Mc Donalds",
+            "address": "691 Romaguera Ville Apt.094",
+            "rating": 3,
+            "category": "Restaurant",
+            "distance": 0.2,
+            "image": "https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/36903047_2113163328696844_341753940766883840_n.jpg?_nc_cat=0&oh=fb7f9553fbf343603de0c89651f1838e&oe=5BDEAD22"
+        },
+        {
+            "id": 2,
+            "title": "Dunkin Donuts",
+            "address": "999 Berge PArkway Suite 559",
+            "rating": 2,
+            "category": "Pastisserie",
+            "distance": 0.5,
+            "image": "https://vignette.wikia.nocookie.net/powerrangers/images/5/5a/Battle_Japan.jpg/revision/latest?cb=20110411132924"
+        },
+        {
+            "id": 3,
+            "title": "Pizza Hut",
+            "address": "190 Jessyca Ranch Apt. 617",
+            "rating": 4,
+            "category": "Fast food",
+            "distance": 1,
+            "image": "https://vignette.wikia.nocookie.net/powerrangers/images/5/58/Battle_France.jpg/revision/latest?cb=20110411133134"
+        },
+        {
+            "id": 4,
+            "title": "Taco bell",
+            "address": "49 Ramon Garden Apt.143",
+            "rating": 4,
+            "category": "Restaurant",
+            "distance": 2,
+            "image": "https://vignette.wikia.nocookie.net/powerrangers/images/7/71/Battle_Kenya_%28Dice-O%29.jpg/revision/latest?cb=20141207182336"
+        },
+        {
+            "id": 5,
+            "title": "Kentucky Fried Chicken",
+            "address": "5617 Giuseppe Inlet",
+            "rating": 4,
+            "category": "Fast food",
+            "distance": 2.2,
+            "image": "https://vignette.wikia.nocookie.net/powerrangers/images/4/4a/Miss_America_%28Dice-O%29.jpg/revision/latest?cb=20141207182337"
+        }
+    ]
+}
