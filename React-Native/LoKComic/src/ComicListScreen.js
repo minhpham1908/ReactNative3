@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
     Text,
     View,
-    FlatList
+    FlatList,
+    ActivityIndicator
 } from 'react-native';
 // import { data } from './database.json';
 
@@ -14,20 +15,22 @@ import axios from 'axios';
 import ComicListItem from './ComicListItem';
 class ComicListScreen extends Component {
     state = {
-        data: []
+        data: [],
+        loading: true
     }
     componentDidMount() {
         axios.get('https://api.techkids.vn/reactnative/api/comics')
-            .then(res => this.setState({ data: res.data.comics }))
+            .then(res => this.setState({ data: res.data.comics, loading: false }))
     }
 
     loadComicByCategory = (category) => {
+        this.setState({ loading: true })
         category === 'Tất cả'
             ? axios.get('https://api.techkids.vn/reactnative/api/comics')
-                .then(res => this.setState({ data: res.data.comics }))
+                .then(res => this.setState({ data: res.data.comics, loading: false }))
             : axios.get(`https://api.techkids.vn/reactnative/api/comics?category=${category}`)
                 .then(res => {
-                    this.setState({ data: res.data.comics.comics })
+                    this.setState({ data: res.data.comics.comics, loading: false })
                 })
                 .catch(error => { console.log(error.response) })
     }
@@ -54,12 +57,17 @@ class ComicListScreen extends Component {
                     initValue='Tất cả'
                     onChange={(option) => this.loadComicByCategory(option.label)}
                 />
-                <FlatList
-                    data={this.state.data}
-                    renderItem={this.renderItem}
-                    numColumns='2'
-                    keyExtractor={this.keyExtractor}
-                />
+                <View>
+                    {this.state.loading === false ? (
+                        <FlatList
+                            data={this.state.data}  
+                            renderItem={this.renderItem}
+                            numColumns='2'
+                            keyExtractor={this.keyExtractor}
+                        />
+                    ) : (<ActivityIndicator />)}
+                </View>
+
             </View>
         );
     }
