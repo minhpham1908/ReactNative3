@@ -65,7 +65,9 @@ class ComicListScreen extends Component {
                             numColumns='2'
                             keyExtractor={this.keyExtractor}
                         />
-                    ) : (<ActivityIndicator />)}
+                    ) : (
+                    <ActivityIndicator />
+                    )}
                 </View>
 
             </View>
