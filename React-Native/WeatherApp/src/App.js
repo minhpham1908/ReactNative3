@@ -7,40 +7,37 @@ import {
   StyleSheet,
   Image,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  Dimensions, Alert
 } from 'react-native';
 import axios from 'axios'
-import { datacore } from './coredata.json'
 class WeatherApp extends Component {
   state = {
-    temp_city: '',
+    text: '',
     cityname: 'hanoi',
     data: null,
     loading: true,
     nhietdo: 0,
-    hienThiDoC: true
+    hienThiDoC: true,
+    error: false
 
   }
 
   componentWillMount() {
-
+    console.log('Mount: ')
+    console.log(this.state.cityname)
     this.loadAPI()
   }
-  async loadAPI() {
-    this.setState = ({ loading: true })
-    await axios.get(`http://api.openweathermap.org/data/2.5/forecast/daily?q=${this.state.cityname}&units=metric&appid=927d09bc49dbee6aac7f5cb1df707542`)
-      .then(res => this.setState({ data: res.data }))
-      .catch(error => { console.log(error.response) })
-    this.setState({
-      loading: false,
-    })
-  }
-  search = () => {
-    this.setState = ({ cityname: this.state.temp_city })
-    axios.get(`http://api.openweathermap.org/data/2.5/forecast/daily?q=${this.state.cityname}&units=metric&appid=927d09bc49dbee6aac7f5cb1df707542`)
-      .then(res =>
-        this.setState({ data: res.data })
-      )
+  loadAPI() {
+    this.setState({ loading: true,error:false })
+    axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?q=${this.state.text === '' ? this.state.cityname : this.state.text}&units=metric&appid=927d09bc49dbee6aac7f5cb1df707542`)
+      .then(res => {
+        this.setState({ data: res.data, loading: false, nhietdo: parseInt(res.data.list[0].temp.day), cityname: res.data.city.name })
+
+      }).catch(error => {
+        
+        this.setState({ error: true, loading: false })
+      })
   }
   gettoday(mili) {
     var d = new Date(mili * 1000)
@@ -58,78 +55,96 @@ class WeatherApp extends Component {
     else return require('../res/snow.png')
   }
   convert(degree) {
-    if (degree == 'C') return this.setState({ nhietdo: this.state.data.list[0].temp.day, hienThiDoC: true })
+    if (degree == 'C') return this.setState({ nhietdo: parseInt(this.state.data.list[0].temp.day), hienThiDoC: true })
     else return this.setState({ nhietdo: parseInt(this.state.data.list[0].temp.day * 1.8 + 32), hienThiDoC: false })
 
   }
   _renderItem = ({ item }) =>
-    <View style={{ flexDirection: 'row', backgroundColor: '#2E2B3E', alignItems: 'center', justifyContent: 'space-around', marginBottom: 20 }}>
-      <View style={{ flex: 1 }}>
+    <View style={{ flexDirection: 'row', backgroundColor: '#2E2B3E', alignItems: 'center', justifyContent: 'space-around', marginBottom: 20, height: Dimensions.get('window').height * 0.1, borderRadius: 5 }}>
+      <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
         <Text style={{ fontSize: 20, color: 'white' }}> {this.gettoday(item.dt)} </Text>
       </View>
       <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
         <Text style={{ fontSize: 20, color: 'white' }}> {parseInt(item.temp.day)} </Text>
         <Image source={this.getWeatherPicture(item.weather[0].main)} style={{ height: 50, width: 50 }} />
       </View>
-
     </View>
+
+
   render() {
+    if (this.state.loading === true)
+      return (
+        <View style={{ flex: 1, backgroundColor: 'rgb(56,54,74)', justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size='large' />
+        </View>
+      )
+
     return (
-      <View style={st.container}>
-        {this.state.loading === false ? (
-          <View>
-            <View style={st.header}>
-              <TextInput
-                style={st.textinput}
-                placeholder={'City...'}
-                autoCorrect={false}
-                onChangeText={(text) => this.setState({ temp_city: text })}
-              />
-              <TouchableOpacity
-                style={st.button}
-                onPress={() => this.search()}>
-                <Text style={{ fontSize: 20, fontWeight: 'bold' }}> Search </Text>
-              </TouchableOpacity>
-
-            </View>
-            <Text style={st.title} > {this.state.data.city.name} </Text>
-            <Text style={st.date} > {this.gettoday(this.state.data.list[0].dt)} </Text>
-            <View style={st.current}>
-              <View style={st.itemincurrent}>
-                <Image style={{ height: 100, width: 100 }} source={this.getWeatherPicture(this.state.data.list[0].weather[0].main)} />
-                <Text style={st.status}> {this.state.data.list[0].weather[0].description} </Text>
-              </View>
-              <View style={st.itemincurrent}>
-                <Text style={st.temperate}> {this.state.nhietdo} </Text>
-                <View style={st.buttonCF}>
-                  <TouchableOpacity
-                    onPress={() => this.convert("C")}
-                  >
-                    <Text style={{ fontSize: 20, color: this.state.hienThiDoC ? 'white' : '#C6C4D1' }}>°C</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => this.convert("F")}
-                  >
-                    <Text style={{ fontSize: 20, color: this.state.hienThiDoC ? '#C6C4D1' : 'white' }}>°F</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-            <FlatList
-              data={this.state.data.list}
-              renderItem={({ item }) => this._renderItem({ item })}
-              keyExtractor={(item) => this.gettoday(item.dt)}
-              style={st.flatlist}
+      this.state.error === false) ? (
+        <View style={st.container}>
+          <View style={st.header}>
+            <TextInput
+              style={st.textinput}
+              placeholder={'City...'}
+              autoCorrect={false}
+              onChangeText={(text) => this.setState({ text })}
             />
+            <TouchableOpacity
+              style={st.button}
+              onPress={() => this.loadAPI()}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold' }}> Search </Text>
+            </TouchableOpacity>
           </View>
-        ) : (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <ActivityIndicator size="large" />
+          <Text style={st.title} > {this.state.data.city.name} </Text>
+          <Text style={st.date} > {this.gettoday(this.state.data.list[0].dt)} </Text>
+          <View style={st.current}>
+            <View style={st.itemincurrent}>
+              <Image style={{ height: 100, width: 100 }} source={this.getWeatherPicture(this.state.data.list[0].weather[0].main)} />
+              <Text style={st.status}> {this.state.data.list[0].weather[0].description} </Text>
             </View>
-          )}
-
-      </View>
-    );
+            <View style={st.itemincurrent}>
+              <Text style={st.temperate}> {this.state.nhietdo} </Text>
+              <View style={st.buttonCF}>
+                <TouchableOpacity
+                  onPress={() => this.convert("C")}
+                >
+                  <Text style={{ fontSize: 20, color: this.state.hienThiDoC ? 'white' : '#C6C4D1' }}>°C</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.convert("F")}
+                >
+                  <Text style={{ fontSize: 20, color: this.state.hienThiDoC ? '#C6C4D1' : 'white' }}>°F</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <FlatList
+            data={this.state.data.list}
+            renderItem={({ item }) => this._renderItem({ item })}
+            keyExtractor={(item) => this.gettoday(item.dt)}
+            style={st.flatlist}
+          />
+        </View>
+      ) : (
+        <View style={st.container}>
+          <View style={st.header}>
+            <TextInput
+              style={st.textinput}
+              placeholder={'City...'}
+              autoCorrect={false}
+              onChangeText={(text) => this.setState({ text })}
+            />
+            <TouchableOpacity
+              style={st.button}
+              onPress={() => this.loadAPI()}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold' }}> Search </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, backgroundColor: 'rgb(56,54,74)', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{color:'white', fontSize:25}}> 404 not found </Text>
+          </View>
+        </View>
+      )
   }
 }
 
