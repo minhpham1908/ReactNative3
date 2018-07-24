@@ -60,7 +60,7 @@ class WeatherApp extends Component {
 
   }
   _renderItem = ({ item }) =>
-    <View style={{ flexDirection: 'row', backgroundColor: '#2E2B3E', alignItems: 'center', justifyContent: 'space-around', marginBottom: 20, height: Dimensions.get('window').height * 0.1, borderRadius: 5 }}>
+    <View style={{ flexDirection: 'row', backgroundColor: '#2E2B3E', alignItems: 'center', justifyContent: 'space-around', marginTop:20, height: Dimensions.get('window').height * 0.1, borderRadius: 5 }}>
       <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
         <Text style={{ fontSize: 20, color: 'white' }}> {this.gettoday(item.dt)} </Text>
       </View>
@@ -68,6 +68,7 @@ class WeatherApp extends Component {
         <Text style={{ fontSize: 20, color: 'white' }}> {parseInt(item.temp.day)} </Text>
         <Image source={this.getWeatherPicture(item.weather[0].main)} style={{ height: 50, width: 50 }} />
       </View>
+    
     </View>
 
 
@@ -119,7 +120,7 @@ class WeatherApp extends Component {
             </View>
           </View>
           <FlatList
-            data={this.state.data.list}
+            data={this.state.data.list.slice(1)}
             renderItem={({ item }) => this._renderItem({ item })}
             keyExtractor={(item) => this.gettoday(item.dt)}
             style={st.flatlist}
@@ -150,6 +151,7 @@ class WeatherApp extends Component {
 
 const st = StyleSheet.create({
   flatlist: {
+    marginTop: 10,
     width: '90%',
     height: '10%'
   },
