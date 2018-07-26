@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     rate: {
-
         backgroundColor: 'green',
         height: 5,
         width: 10,
