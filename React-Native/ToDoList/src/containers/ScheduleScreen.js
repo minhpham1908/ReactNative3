@@ -10,6 +10,7 @@ import CalendarStrip from 'react-native-calendar-strip'
 import ItemDate from '../components/itemDate';
 import ItemTask from '../components/ItemTask';
 import { data } from '../database.json'
+import CategoryPicker from '../components/CategoryPicker';
 
 class ScheduleScreen extends Component {
   state = {}

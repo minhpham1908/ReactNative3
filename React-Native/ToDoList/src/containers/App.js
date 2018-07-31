@@ -27,13 +27,12 @@ const Navigation = createStackNavigator({
               source={{ uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADPSURBVGhD7dZBCsIwEIXhgFtFvIDgAVx5GO8jXsWFQ8pE6UaT6KJdCq48iQfQCqmoFEppq1N5H8wqocwPpVQBAABIRES9OE5G+RiTDsJRtzDvp5Hxt3y08Uk46haESIMQaRAiDUKkQYg0CGnL4y+W+TCrOprt/D3EnYvulc16s5uEVeohssPXhb4/bhVWqQchjU1jIcd+9n6fqk7E/vKx0LXoXtlkz1mGVX4Dn19pECINQqRBiDQIkQYh0vxNCG3tWLOn5xi3CEcAAADQDqXu1SdrzcOGeTsAAAAASUVORK5CYII=' }} />
           </TouchableOpacity>,
         headerTitleStyle: {
-          textAlign: 'center',
-          fontSize: 20,
           color: gray,
+          flex: 1
         },
         headerStyle: {
           backgroundColor: white,
-          elevation:0
+          elevation: 0
         },
       }
     )
@@ -63,10 +62,10 @@ const Navigation = createStackNavigator({
           color: gray,
         },
         headerStyle: {
-          elevation:0,
+          elevation: 0,
           backgroundColor: white
         },
-        
+
       }
     )
   }
