@@ -10,7 +10,11 @@ import { createStackNavigator } from 'react-navigation'
 import ScheduleScreen from './ScheduleScreen';
 import AddTaskScreen from './AddTaskScreen';
 import { gray, white, calendarHighlight } from '../styles'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import rootReducer from '../reducers'
 
+const store = createStore(rootReducer)
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 const Navigation = createStackNavigator({
   Schedule: {
@@ -51,13 +55,12 @@ const Navigation = createStackNavigator({
               source={{ uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEKSURBVGhD7dMxagJBFMbxVbHyBhZpLTyFEMhF0tva7QkCaSwk2CQ2WUd2tDPu8wS5QBrrXECw0cksvkJlTev35PvBwLLzivmzswlRtTRN6/poUwihNsvlxeWyc15+Pr10dMuOY0QxnnkJJ+tDt224EhHiV3nTEXzl/1AVEa/Yxvuvto5h+y8iW6wedAwbI1AwAgUjUDACBSNQMAIFI1DcRUQpHvjVfMT7ctmKB9+fRrhcfk1FlLIsa5QHPw8pDvGqPeuIHc4XvRizvZOY1SNjEDEGFWNQMQYVY1AxBhVjUDEG1bUYl6+fdMSO6hiZ6LYtlzHOy0C37JnOpet8MYyrPxp9N/U10e0lyR+GznmkkPcJ3wAAAABJRU5ErkJggg==' }} />
           </TouchableOpacity>,
         headerRight:
+        
           <TouchableOpacity
-            onPress={() => navigation.navigate('AddTask')}
-          >
+            onPress={() => navigation.getParam('addTask')}>
             <Text style={{ marginEnd: 10, fontSize: 18, color: calendarHighlight }}> Done </Text>
           </TouchableOpacity>,
         headerTitleStyle: {
-
           fontSize: 20,
           color: gray,
         },
@@ -65,7 +68,6 @@ const Navigation = createStackNavigator({
           elevation: 0,
           backgroundColor: white
         },
-
       }
     )
   }
@@ -74,7 +76,9 @@ class App extends Component {
   state = {}
   render() {
     return (
-      <Navigation />
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
     );
   }
 }

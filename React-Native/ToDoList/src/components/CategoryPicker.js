@@ -7,22 +7,25 @@ import {
     FlatList
 } from 'react-native';
 import { chooseColorByCategory } from '../utils';
-import {white} from '../styles'
+import { white } from '../styles'
+import { connect } from 'react-redux'
+import { chooseCategory } from '../actions'
 
 const categories = ['To do', 'Personal', 'Birthday', 'Event', 'Shopping'];
 
 // const categories = [{ key: 'To do' }, { key: 'Personal' }, { key: 'Birthday' }, { key: 'Event' }, { key: 'Shopping' }];
 class CategoryPicker extends Component {
     state = {
-        category:'To do'
-    }
-    onPickCategory = (item) => this.setState({category:item})
 
+    }
+    onPickCategory = (item) => {
+        this.props.chooseCategory(item)
+    }
     renderItem = ({ item }) => (
         <TouchableOpacity onPress={() => this.onPickCategory(item)} >
-        <View style={{ backgroundColor: chooseColorByCategory(item), width: 80, height: 80, marginEnd: 5, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
-            <Text style={styles.textItemCategory}>{item}</Text>
-        </View>
+            <View style={{ backgroundColor: chooseColorByCategory(item), width: 80, height: 80, marginEnd: 5, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
+                <Text style={styles.textItemCategory}>{item}</Text>
+            </View>
         </TouchableOpacity>
     )
     render() {
@@ -35,7 +38,7 @@ class CategoryPicker extends Component {
                     style={{ marginStart: 20, marginVertical: 10 }}
                     keyExtractor={(index) => index}
                 />
-                <Text style={[styles.textCurrentCategory, {color: chooseColorByCategory(this.state.category)}]}> This task belong to {this.state.category} category</Text>
+                <Text style={[styles.textCurrentCategory, { color: chooseColorByCategory(this.props.category) }]}> This task belong to {this.props.category} category</Text>
             </View>
         );
     }
@@ -48,9 +51,11 @@ const styles = StyleSheet.create({
     },
     textItemCategory: {
         fontWeight: 'bold',
-        
+
         fontSize: 14,
     }
 })
 
-export default CategoryPicker;
+const mapStateToProps = (store) => ({ category: store.category })
+
+export default connect(mapStateToProps, { chooseCategory })(CategoryPicker);

@@ -10,13 +10,14 @@ import CalendarStrip from 'react-native-calendar-strip'
 import ItemDate from '../components/itemDate';
 import ItemTask from '../components/ItemTask';
 import { data } from '../database.json'
-import CategoryPicker from '../components/CategoryPicker';
+
+import { connect } from 'react-redux'
 
 class ScheduleScreen extends Component {
   state = {}
   renderItem = ({ item }) => <ItemTask task={item} />
 
-  renderSectionHeader = ({ section: { date } }) => <ItemDate date={date}/>
+  renderSectionHeader = ({ section: { date } }) => <ItemDate date={date} />
   render() {
     return (
       <View>
@@ -29,7 +30,7 @@ class ScheduleScreen extends Component {
         <SectionList
           renderItem={this.renderItem}
           renderSectionHeader={this.renderSectionHeader}
-          sections={data}
+          sections={this.props.task}
           keyExtractor={(item) => item.id}
         />
       </View>
@@ -46,4 +47,6 @@ const st = StyleSheet.create({
     backgroundColor: white
   }
 })
-export default ScheduleScreen;
+
+const mapStateToProps = ({ tasks }) => ({ tasks })
+export default connect(mapStateToProps)(ScheduleScreen);
