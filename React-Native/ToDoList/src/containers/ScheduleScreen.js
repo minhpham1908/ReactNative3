@@ -15,10 +15,11 @@ import { connect } from 'react-redux'
 
 class ScheduleScreen extends Component {
   state = {}
-  renderItem = ({ item }) => <ItemTask task={item} />
+  renderItem = ({ item, section }) => <ItemTask task={item} dayId={section.id}/>
 
   renderSectionHeader = ({ section: { date } }) => <ItemDate date={date} />
   render() {
+    // console.log(this.props.tasks)
     return (
       <View>
         <CalendarStrip
@@ -30,7 +31,7 @@ class ScheduleScreen extends Component {
         <SectionList
           renderItem={this.renderItem}
           renderSectionHeader={this.renderSectionHeader}
-          sections={this.props.task}
+          sections={this.props.tasks}
           keyExtractor={(item) => item.id}
         />
       </View>
@@ -49,4 +50,4 @@ const st = StyleSheet.create({
 })
 
 const mapStateToProps = ({ tasks }) => ({ tasks })
-export default connect(mapStateToProps)(ScheduleScreen);
+export default connect(mapStateToProps, null)(ScheduleScreen);

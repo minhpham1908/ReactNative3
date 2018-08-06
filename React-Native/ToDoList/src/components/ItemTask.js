@@ -7,30 +7,47 @@ import {
 } from 'react-native';
 
 import RoundCheckbox from 'rn-round-checkbox';
-import {chooseColorByCategory} from '../utils'
+import { chooseColorByCategory } from '../utils'
 import { gray, categoryBirthday, white, calendarHighlight } from '../styles'
+import { toggleTask, deleteTask } from '../actions'
+import { connect } from 'react-redux'
 class ItemTask extends Component {
     state = {
-        taskDone:false
+        taskDone: this.props.task.completed
     }
-    
 
-  toogleTask = newValue => this.setState({ taskDone: newValue })
+
+    toggleTask = newValue => {
+        this.setState({ taskDone: newValue })
+        this.props.toggleTask({
+            timeId: this.props.task.id,
+            dayId: this.props.dayId
+        })
+    }
+
+    deleteTask = () => {
+        this.props.deleteTask({
+            timeId: this.props.task.id,
+            dayId: this.props.dayId
+        })
+    }
 
     render() {
         return (
             <View style={style.container}>
-                <RoundCheckbox 
-                checked={this.state.taskDone}
-                onValueChange={this.toogleTask}
-                backgroundColor={calendarHighlight}
+                <RoundCheckbox
+                    checked={this.state.taskDone}
+                    onValueChange={this.toggleTask}
+                    backgroundColor={calendarHighlight}
                 />
                 <Text style={style.time}>{this.props.task.time}</Text>
-                <TouchableOpacity style={[style.task, { backgroundColor: chooseColorByCategory(this.props.task.category) }]}>
+                <TouchableOpacity
+                    style={[style.task, { backgroundColor: chooseColorByCategory(this.props.task.category) }]}
+                    onPress={this.deleteTask}>
                     <Text style={style.content}>{this.props.task.content}</Text>
-                    <Text style={style.category}>{this.props.task.category}</Text>
+                <Text style={style.category}>{this.props.task.category}</Text>
                 </TouchableOpacity>
-            </View>
+            </View >
         );
     }
 }
@@ -65,4 +82,5 @@ const style = StyleSheet.create({
         opacity: 0.8
     }
 })
-export default ItemTask;
+
+export default connect(null, { toggleTask, deleteTask })(ItemTask);
