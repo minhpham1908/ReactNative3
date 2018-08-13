@@ -28,7 +28,7 @@ class ItemTask extends Component {
     deleteTask = () => {
         this.props.deleteTask({
             timeId: this.props.task.id,
-            dayId: this.props.dayId
+            id: this.props.dayId
         })
     }
 
@@ -43,7 +43,7 @@ class ItemTask extends Component {
                 <Text style={style.time}>{this.props.task.time}</Text>
                 <TouchableOpacity
                     style={[style.task, { backgroundColor: chooseColorByCategory(this.props.task.category) }]}
-                    onPress={this.deleteTask}>
+                    onLongPress={this.deleteTask}>
                     <Text style={style.content}>{this.props.task.content}</Text>
                 <Text style={style.category}>{this.props.task.category}</Text>
                 </TouchableOpacity>

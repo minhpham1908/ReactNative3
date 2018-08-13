@@ -18,5 +18,5 @@ export const toggleTask = (data) => ({
 })
 export const deleteTask = (data) => ({
     type: DELETE_TASK,
-    payload:data
+    payload: data
 })

@@ -9,30 +9,48 @@ import { white, calendarBackground, calendarHighlight } from '../styles';
 import CalendarStrip from 'react-native-calendar-strip'
 import ItemDate from '../components/itemDate';
 import ItemTask from '../components/ItemTask';
-import { data } from '../database.json'
+import { connect } from 'react-redux';
+import { getDateStringFromDate } from '../utils';
 
-import { connect } from 'react-redux'
+const listRef = 'listRef'
 
 class ScheduleScreen extends Component {
   state = {}
   renderItem = ({ item, section }) => <ItemTask task={item} dayId={section.id}/>
 
-  renderSectionHeader = ({ section: { date } }) => <ItemDate date={date} />
+  renderSectionHeader = ({ section: { date } }) => section.data.length!==0 && <ItemDate date={date} />
+
+  onDateSelected = (date) => {
+    const index = this.props.tasks.map(dayTasks=> dayTasks.date).indexOf(getDateStringFromDate(date._d))
+    console.log(index)
+    index !== -1 && this.scrollSeclectionList(index)
+  }
+
+  scrollSeclectionList = (index) => {
+    this.refs.listRef.scrollToLocation({
+      secttionIndex: index,
+      itemIndex: 0,
+      viewOffset: 40
+    })
+  }
   render() {
     // console.log(this.props.tasks)
     return (
-      <View>
+      <View style={{flex:1}}>
         <CalendarStrip
           style={st.calendar}
           calendarColor={calendarBackground}
           highlightDateNumberStyle={{ color: calendarHighlight }}
           highlightDateNameStyle={{ color: calendarHighlight }}
+          onDateSelected={this.onDateSelected}
         />
         <SectionList
           renderItem={this.renderItem}
           renderSectionHeader={this.renderSectionHeader}
           sections={this.props.tasks}
           keyExtractor={(item) => item.id}
+          ref={listRef}
+          style={{marginTop:10}}
         />
       </View>
     );

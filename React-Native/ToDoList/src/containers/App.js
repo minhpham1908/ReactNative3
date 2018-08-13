@@ -13,8 +13,10 @@ import { gray, white, calendarHighlight } from '../styles'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import rootReducer from '../reducers'
+import { PersistGate } from 'redux-persist/integration/react'
 
-const store = createStore(rootReducer)
+import configureStore from '../configureStore'
+const configureStore = configureStore()
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 const Navigation = createStackNavigator({
   Schedule: {
@@ -75,8 +77,10 @@ class App extends Component {
   state = {}
   render() {
     return (
-      <Provider store={store}>
-        <Navigation />
+      <Provider store={configureStore.store}>
+        <PersistGate loading={null} persistor={configureStore.persistor}>
+          <Navigation />
+        </PersistGate>
       </Provider>
     );
   }
