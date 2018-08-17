@@ -16,7 +16,8 @@ import firebase from 'react-native-firebase';
 class LoginScreen extends Component {
     state = {
         isSigningIn: false,
-        isSigningUp: false
+        isSigningUp: false,
+        phone: '+84'
     }
 
     onSignUp = () => {
@@ -46,6 +47,15 @@ class LoginScreen extends Component {
             }))
     }
 
+    onSignInbyPhone = () => {
+        this.setState({ isSigningIn: true })
+        const phone = this.state.phone
+        firebase.auth().signInWithPhoneNumber(phone)
+            .then(confirmResult => this.setState({ confirmResult, message: 'Code has been sent!', isSigningIn: false }))
+            .catch(error => this.setState({ isSigningIn: false, message: `Sign In With Phone Number Error: ${error.message}`, }))
+    }
+
+    
     render() {
         return (
             <KeyboardAvoidingView style={styles.container}
@@ -59,50 +69,28 @@ class LoginScreen extends Component {
                 <View style={styles.row}>
                     <Image
                         style={styles.icon}
-                        source={require('../../res/ic_email.png')}
+                        source={require('../../res/ic_phone_number.png')}
                     />
-                    <Text style={styles.title}>Email</Text>
+                    <Text style={styles.title}>Phone?</Text>
                 </View>
                 <TextInput
                     style={styles.inputField}
-                    onChangeText={(email) => this.setState({ email })}
-                    value={this.state.email}
+                    onChangeText={(phone) => this.setState({ phone })}
+                    value={this.state.phone}
                     autoCorrect={false}
                     underlineColorAndroid='rgba(0,0,0,0)'
                 />
-                <View style={styles.row}>
-                    <Image
-                        style={styles.icon}
-                        source={require('../../res/ic_password.png')}
-                    />
-                    <Text style={styles.title}>Password</Text>
-                </View>
-                <TextInput
-                    style={styles.inputField}
-                    onChangeText={(password) => this.setState({ password })}
-                    value={this.state.password}
-                    autoCorrect={false}
-                    underlineColorAndroid='rgba(0,0,0,0)'
-                />
+                <Text style={{ padding: 5, color: '#fff' }}>{this.state.message}</Text>
                 <Text style={styles.textError}>{this.state.error}</Text>
-                <View style={[styles.row, { justifyContent: 'center' }]}>
-                    <TouchableOpacity style={[styles.button, { backgroundColor: primaryColorGreen }]}
-                        onPress={this.onSignUp}>
-                        {this.state.isSigningUp === true
-                            ? <ActivityIndicator
-                                size='small'
-                                color='white' />
-                            : <Text style={{ color: 'white' }}>Sign Up</Text>}
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.button, { backgroundColor: primaryColorRed }]}
-                    onPress={this.onSignIn}>
-                        {this.state.isSigningIn === true
-                            ? <ActivityIndicator
-                                size='small'
-                                color='white' />
-                            : <Text style={{ color: 'white' }}>Sign In</Text>}
-                    </TouchableOpacity>
-                </View>
+
+                <TouchableOpacity style={[styles.button, { backgroundColor: primaryColorRed, justifyContent: 'center', alignSelf:'center' }]}
+                    onPress={this.onSignInbyPhone}>
+                    {this.state.isSigningIn === true
+                        ? <ActivityIndicator
+                            size='small'
+                            color='white' />
+                        : <Text style={{ color: 'white' }}>Sign In</Text>}
+                </TouchableOpacity>
             </KeyboardAvoidingView>
         );
     }
