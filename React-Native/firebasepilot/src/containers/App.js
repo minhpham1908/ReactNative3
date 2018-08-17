@@ -22,9 +22,10 @@ const BottomNavigation = createBottomTabNavigator({
 })
 
 const SwitchNavigation = createSwitchNavigator({
+    LoginScreen: LoginScreen,
     HomeScreen: BottomNavigation,
     SplashScreen: SpashScreen,
-    LoginScreen: LoginScreen,
+    
     
 })
 class App extends Component {
