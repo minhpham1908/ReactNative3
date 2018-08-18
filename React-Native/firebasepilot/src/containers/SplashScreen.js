@@ -5,10 +5,17 @@ import {
     StyleSheet,
     Image
 } from 'react-native';
+import firebase from 'react-native-firebase';
 import { backgroundColor, primaryColorBrown, primaryColorRed, primaryColorGreen } from '../styles'
+
 
 class SpashScreen extends Component {
     state = {}
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged(res => res !== null
+            ? setTimeout(() => this.props.navigation.navigate('HomeScreen'), 2000)
+            : setTimeout(() => this.props.navigation.navigate('LoginScreen'), 2000))
+    }
     render() {
         return (
 
