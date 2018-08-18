@@ -10,7 +10,7 @@ import {
     KeyboardAvoidingView,
     ActivityIndicator
 } from 'react-native';
-import { backgroundColor, primaryColorBrown, primaryColorRed, primaryColorGreen } from '../styles'
+import { backgroundColor, primaryColorBrown, primaryColorRed, primaryColorGreen, commonStyles } from '../styles'
 import firebase from 'react-native-firebase';
 
 class LoginScreen extends Component {
@@ -86,7 +86,7 @@ class LoginScreen extends Component {
                 />
                 <Text style={styles.textError}>{this.state.error}</Text>
                 <View style={[styles.row, { justifyContent: 'center' }]}>
-                    <TouchableOpacity style={[styles.button, { backgroundColor: primaryColorGreen }]}
+                    <TouchableOpacity style={[commonStyles.button, { backgroundColor: primaryColorGreen }]}
                         onPress={this.onSignUp}>
                         {this.state.isSigningUp === true
                             ? <ActivityIndicator
@@ -94,7 +94,7 @@ class LoginScreen extends Component {
                                 color='white' />
                             : <Text style={{ color: 'white' }}>Sign Up</Text>}
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.button, { backgroundColor: primaryColorRed }]}
+                    <TouchableOpacity style={[commonStyles.button, { backgroundColor: primaryColorRed }]}
                     onPress={this.onSignIn}>
                         {this.state.isSigningIn === true
                             ? <ActivityIndicator
@@ -133,16 +133,7 @@ const styles = StyleSheet.create({
     },
     textError: {
         color: primaryColorRed,
-
     },
-    button: {
-        borderRadius: 20,
-        height: 40,
-        width: 100,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 10
-    }
 })
 
 export default LoginScreen;
