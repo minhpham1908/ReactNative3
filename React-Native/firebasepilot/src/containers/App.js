@@ -13,7 +13,7 @@ import TabHistory from './TabHistory';
 import TabInfo from './TabInfo';
 import LoginScreen from './LoginScreen';
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { primaryColorGreen } from '../styles';
+import { primaryColorGreen, primaryColorRed } from '../styles';
 
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 const BottomNavigation = createBottomTabNavigator(
@@ -40,7 +40,22 @@ const BottomNavigation = createBottomTabNavigator(
 
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
-                return <Icon name={iconName} size={25} color={tintColor} />;
+                return <View>
+                    <Icon name={iconName} size={25} color={tintColor} />
+                    {routeName === 'Order' &&
+                        <View style={{
+                            position:'absolute',
+                            left:15,
+                            backgroundColor: primaryColorRed,
+                            width: 20,
+                            height: 20,
+                            borderRadius: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{ color: 'white' }}>1</Text>
+                        </View>}
+                </View>;
             },
         }),
         tabBarOptions: {

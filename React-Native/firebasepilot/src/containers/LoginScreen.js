@@ -19,12 +19,24 @@ class LoginScreen extends Component {
         isSigningUp: false
     }
 
+    OnPushDataToFireBase = (user) => {
+        firebase.database().ref('/users').child(user.uid).set({
+            displayname:'',
+            phoneNumber:'',
+            address:''
+        })
+    }
+
     onSignUp = () => {
         this.setState({ isSigningUp: true })
         const email = this.state.email
         const password = this.state.password
         firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password)
-            .then(res => this.setState({ isSigningUp: false }))
+            .then(res => {
+                this.setState({ isSigningUp: false })
+                this.OnPushDataToFireBase(res.user._user)
+                this.props.navigation.navigate('HomeScreen')
+            })
             .catch(err => this.setState({
                 error: err.toString(),
                 email: '',
@@ -38,7 +50,10 @@ class LoginScreen extends Component {
         const email = this.state.email
         const password = this.state.password
         firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
-            .then(res => this.setState({ isSigningIn: false }))
+            .then(res => {
+                this.setState({ isSigningIn: false })
+                this.props.navigation.navigate('HomeScreen')
+            })
             .catch(err => this.setState({
                 error: err.toString(),
                 email: '',
@@ -95,7 +110,7 @@ class LoginScreen extends Component {
                             : <Text style={{ color: 'white' }}>Sign Up</Text>}
                     </TouchableOpacity>
                     <TouchableOpacity style={[commonStyles.button, { backgroundColor: primaryColorRed }]}
-                    onPress={this.onSignIn}>
+                        onPress={this.onSignIn}>
                         {this.state.isSigningIn === true
                             ? <ActivityIndicator
                                 size='small'
