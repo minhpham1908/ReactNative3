@@ -3,7 +3,7 @@ export const primaryColorGreen = "#5fa0ae";
 export const primaryColorRed = "#c94c4d";
 export const backgroundColor = "#f7f5ea";
 export const primaryColorBrown = "#5a4946";
-
+export const iconSize = 25;
 export const white = "#fff";
 
 export const commonStyles = StyleSheet.create({
@@ -19,5 +19,13 @@ export const commonStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 10
+    },
+    fontTitleScreen: {
+        fontSize: 20,
+        color: primaryColorRed,
+        fontWeight: 'bold',
+        marginHorizontal: 7,
+        marginVertical: 10
+
     }
 })
