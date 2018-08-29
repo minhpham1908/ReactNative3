@@ -8,20 +8,27 @@ import {
 } from 'react-native';
 
 import { commonStyles, primaryColorBrown, primaryColorRed } from '../styles'
+import {addOrder} from '../actions'
+import { connect } from 'react-redux'
 
 class DishItem extends Component {
     state = {}
+
+    addToCart = () => {
+        this.props.addOrder(this.props.item)
+    }
     render() {
         return (
             <View style={styles.container}>
                 <Image
-                    source={{ uri: this.props.image }}
+                    source={{ uri: this.props.item.image }}
                     style={styles.image}
                 />
-                <Text style={styles.name} numberOfLines={1}>{this.props.name}</Text>
-                <Text style={styles.price} numberOfLines={1}>{`${this.props.price}$`}</Text>
+                <Text style={styles.name} numberOfLines={1}>{this.props.item.name}</Text>
+                <Text style={styles.price} numberOfLines={1}>{`${this.props.item.price}$`}</Text>
                 <TouchableOpacity
                     style={[commonStyles.button, { backgroundColor: primaryColorRed, marginTop: 10 }]}
+                    onPress={this.addToCart}
                 >
                     <Text style={{ color: 'white' }}>Add to cart</Text>
                 </TouchableOpacity>
@@ -57,4 +64,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default DishItem;
+export default connect(null,{addOrder})(DishItem);

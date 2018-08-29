@@ -44,7 +44,7 @@ class TabMenu extends Component {
         </View>
     </TouchableWithoutFeedback>
 
-    renderDish = ({ item }) => <DishItem name={item.name} price={item.price} image={item.image} />
+    renderDish = ({ item }) => <DishItem item={item} />
     render() {
         return (
             <View style={commonStyles.container}>
